@@ -1,0 +1,127 @@
+Extra asset used-
+	Post Processing Stack 2
+
+Scripts-
+	MainMenu.cs
+	-Button and bool variables to assign Play Function and show high score.
+	-Start()
+	 -Add Click listener to Play button and score
+	 -Check whether player is playing for the first time or not by checking player prefs key of score
+	-PlayGame()
+	 -Load the game scene
+	-ShowScore()
+	 -Flip the show bool, to hide or show the high score.
+	 -Retrieve the high score, show if it exists.
+
+
+	GameManager.cs
+	-Create serializable class, to create a new data class for Foood type, colour and score.
+	-Create a static instance of GameManager to easily access from other scripts.
+	-The prefab to spawn as food for the snake.
+	-Round score and streak holder.
+	-All Food types, a list of food types.
+	-StartFood,variable for initial amount of food to spawn in the scene	
+	-UI References
+	-Start()
+	 -Calculate the radius of the world.
+	 -Spawn initial food.
+	-Update()
+	 -Update score text and streak text.
+	-SpawnFood()
+	 -First Generate a random position and check whether its inside the world or not, if its inside, generate a random position again.
+	 -Spawn the food prefab and randomly select a food type.
+	 -Assign the food type
+	-AddScore(Color color,float score)
+	 -check whether the current food that snake ate has the same the colour has the previos food.
+	 -if yes, streak increases, if no streak resets to 1.
+	 -Add the score to the round score variable after multiplying with streak.
+	 -SpawnFood again
+	-Dead()
+	 -Set streak to 0, we died.
+	 -Show game over UI.
+	 -Check whether the current score is less than or greater than my previous high score, if greater then save my new high score.
+
+
+	SnakeMovement.cs
+	-Reference to my rigidbody
+	-Set the amount of gravity towards the spherical body you want.
+	-List of all the snake body parts.
+	-A prefab of block of the snake body.
+	-Movement speed, and the distance between each block, startSize: the size of the starting snake.
+	-Start()
+	 -add present transform to the body list, as its our head.
+	 -if any start  size add those bodies.
+	-Update()
+	 -Check whether we have movement in A,D.
+	 -If yes rotate my body on y direction according to axis value.
+	-FixedUpdate()
+	 -calls to different functions.
+	-AddGravity()
+	 -Calculate the direction to which the gravity will act,center of the spherical body.(MyPosition-WorldPosition).normalized
+	 -Apply force to the direction
+	 -Calculate a Quaternion angle from normal of my position to the center.
+	 -Apply the rotation,so that the body can sit on the spherical body better.
+	-MoveBody()
+	 -Iterate the list of body parts from position 1 to end.
+	 -Selection the body part at current index.
+	 -Select theprevios body part.
+	 -Calculate the distance between them.
+	 -Now we will calculate the time to move to the new position, this prevents the body from getting merged.
+	 -We slerp the position of the current body part to the position of the previous part and we do the same thing with rotation.
+	-AddBody()
+	 -Adds a body part
+	-Dead()
+	 -Main camera is unchilded from the player.
+	 -Player is deactivated.
+
+	Food.cs
+	-Reference the rigidbody of the food
+	-Variable for storing the center of the world.
+	-Variable for score,color and to check whether its initialized or grounded;
+	-OnCollisionEnter()
+	 -If we hit ground, set kinematic and trigger to true and we are grounded.
+	-FixedUpdate()
+	 -Check whether we are init and we are not grounded
+	 -If condition is true apply the gravity towards the center of the world.
+	 -And align our rotation with the rotation that we should have while we are landed
+	-SetValues(Color,score,center)
+	 -Assign the variables to the Food class, basically initializing it.
+	 -Set the material color and emission color to the type of color this foodtype is of.
+	 -Set initializeed to true.
+
+	CollisionTracker.cs
+	 -OnTriggerEnter
+	  -Check wheter it is food
+	   -if food then we call function add score from game manager,increase our body and destroy the food.
+	  -Check whether it is our own body, yes we die send messages to the SnakeMovement.cs and gamemanager.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
